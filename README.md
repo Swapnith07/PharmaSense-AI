@@ -76,7 +76,6 @@ PharmaSense AI is a sophisticated pharmaceutical safety system that combines **m
    ┌───▼────┐         ┌───▼────┐        ┌───▼────┐
    │ NER    │         │ Intent │        │Response│
    │ Agent  │         │ Agent  │        │ Agent  │
-   │(agents)│         │(agents)│        │(agents)│
    └───┬────┘         └───┬────┘        └───┬────┘
        │                  │                  │
        └──────────────┬───┴──────────────┬───┘
@@ -148,21 +147,51 @@ docker run -p 6333:6333 -p 6334:6334 \
 uvicorn server:app --reload
 ```
 
-### First Query
+---
 
-```bash
-# Check drug interaction
-curl -X POST http://localhost:8000/api/check_interactions \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Can I take aspirin with warfarin?"}'
+## 🔑 Configuration
 
-# Response:
-# {
-#   "success": true,
-#   "ai_response": "⚠️ MAJOR INTERACTION WARNING...",
-#   "intent": "check_interaction"
-# }
-```
+### Local Development Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Swapnith07/PharmaSense-AI.git
+   cd PharmaSense-AI
+   ```
+
+2. **Create environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Add your API keys to `.env`:**
+   ```bash
+   GEMINI_API_KEY=your_key_here
+   NEO4J_PASSWORD=your_password_here
+   ```
+
+4. **Install dependencies:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+5. **Start databases:**
+   ```bash
+   docker-compose up -d
+   ```
+
+6. **Run the application:**
+   ```bash
+   uvicorn server:app --reload
+   ```
+
+### Getting API Keys
+
+- **Gemini API:** https://makersuite.google.com/app/apikey
+- **Neo4j:** Local instance or Neo4j Aura
+- **Qdrant:** Local instance or Qdrant Cloud
 
 ---
 
@@ -176,23 +205,20 @@ PharmaSense-AI/
 ├── 💾 graphdb.py              # Neo4j database interface
 ├── 🔍 vectordb.py             # Qdrant vector database interface
 ├── 🔗 crossdb.py              # Unified database abstraction
-├── 📚 additional_chatbot.py    # Legal/Regulatory RAG chatbot
+├── 📚 additional_chatbot.py   # Legal/Regulatory RAG chatbot
 ├── 🧬 embeddings.py           # BioBERT embedding generation
 ├── 🎨 index.html              # Web UI (3-tab interface)
 │
-├── 📦 requirements.txt         # Python dependencies
-├── ⚙️ config.json              # Configuration settings
+├── 📦 requirements.txt        # Python dependencies
+├── ⚙️ config.json.example     # Configuration template
+├── 🔐 .env.example            # Environment variables template
 │
 ├── 📊 essentials/
-│   ├── ddi.tsv                # 500K+ drug-drug interactions
-│   ├── drug_embeddings_*.npz  # BioBERT embeddings (4000+ drugs)
-│   └── db.txt                 # Database connection commands
+│   ├── ddi.tsv                # Drug-drug interactions data
+│   └── drug_embeddings_*.npz  # BioBERT embeddings
 │
-├── 🧠 models/
-│   └── all-MiniLM-L6-v2/      # Sentence-transformers model
-│
-└── 🗄️ qdrant_storage/         # Vector database storage
-    └── collections/
+└── 🧠 models/
+    └── all-MiniLM-L6-v2/      # Sentence-transformers model
 ```
 
 ---
@@ -327,36 +353,41 @@ query = "What is metformin used for?"
 
 ### Privacy Protections
 
-✅ **No Data Retention** - Stateless processing
-✅ **No Session State** - Each request is independent
-✅ **Medical Disclaimers** - Explicit in every response
-✅ **Scope Limitation** - Only pharmaceutical information
-✅ **Safe Degradation** - Transparent error handling
+✅ **No Data Retention** - Stateless processing  
+✅ **No Session State** - Each request is independent  
+✅ **Medical Disclaimers** - Explicit in every response  
+✅ **Scope Limitation** - Only pharmaceutical information  
+✅ **Safe Degradation** - Transparent error handling  
 
 ### Medical Safety
 
-✅ **Safety-First Design** - Medical disclaimers always included
-✅ **Severity Classifications** - SAFE, CAUTION, MAJOR_INTERACTION
-✅ **Healthcare Provider Referral** - Always recommended
-✅ **No Medical Advice** - Information only, decisions deferred to professionals
+✅ **Safety-First Design** - Medical disclaimers always included  
+✅ **Severity Classifications** - SAFE, CAUTION, MAJOR_INTERACTION  
+✅ **Healthcare Provider Referral** - Always recommended  
+✅ **No Medical Advice** - Information only, decisions deferred to professionals  
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Environment Variables
 
-Edit `config.json` to customize:
+Create a `.env` file based on `.env.example`:
 
-```json
-{
-  "gemini_api_key": "your-api-key",
-  "neo4j_uri": "bolt://localhost:7687",
-  "neo4j_user": "neo4j",
-  "neo4j_password": "StrongPass123",
-  "qdrant_host": "localhost",
-  "qdrant_port": 6333,
-  "similarity_threshold": 0.35,
-  "max_results": 5
-}
+```bash
+# Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Neo4j Database
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_neo4j_password_here
+
+# Qdrant Vector Database
+QDRANT_HOST=localhost
+QDRANT_PORT=6333
+
+# Application Settings
+SIMILARITY_THRESHOLD=0.35
+MAX_RESULTS=5
 ```
 
 ---
@@ -400,13 +431,27 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 - ⚠️ Always consult with a licensed healthcare provider
 - ⚠️ Information may change - verify with current sources
 
-**Use at your own risk. The authors assume no liability for misuse or medical decisions made based on this system.**-
+**Use at your own risk. The authors assume no liability for misuse or medical decisions made based on this system.**
+
+---
+
+## 👥 Authors
+
+This project was developed collaboratively by:
+
+| Author | GitHub |
+|--------|--------|
+| **Swapnith Reddy** | [@Swapnith07](https://github.com/Swapnith07) | - |
+| **Bhavika Gondi** | [@bhavika-reddy](https://github.com/bhavika-reddy) | 
+
+
 
 ## 📞 Contact & Support
 
-- 📧 Email: swapnith07@gmail.com
 - 🐛 Issues: [GitHub Issues](https://github.com/Swapnith07/PharmaSense-AI/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/Swapnith07/PharmaSense-AI/discussions)
+- 📧 Bhavika Gondi: bhavikareddy.gondi@gmail.com
+- 📧 DVSS Swapnith: swapnith07@gmail.com
 
 ---
 
@@ -419,8 +464,5 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 ---
 
 <div align="center">
-
 **Made with ❤️ for pharmaceutical safety**
-
-
 </div>
