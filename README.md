@@ -398,7 +398,6 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 - ⚠️ NOT a substitute for professional medical advice
 - ⚠️ Always consult with a licensed healthcare provider
-- ⚠️ Not intended for emergency situations - call 911
 - ⚠️ Information may change - verify with current sources
 
 **Use at your own risk. The authors assume no liability for misuse or medical decisions made based on this system.**-
