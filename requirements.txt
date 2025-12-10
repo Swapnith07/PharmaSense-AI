@@ -1,0 +1,59 @@
+# Core Streamlit and Web Framework
+streamlit==1.28.1
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# AI and Language Models
+google-generativeai>=0.3.0
+transformers==4.35.2
+torch==2.1.1
+sentence-transformers==2.2.2
+
+# Database Systems
+neo4j==5.14.1
+qdrant-client==1.6.9
+
+# Data Processing and Analysis
+pandas>=2.1.0
+numpy>=1.24.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+
+# Text Processing and NLP
+nltk>=3.8
+textblob>=0.17.1
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.21.1
+
+# API and HTTP
+requests>=2.31.0
+httpx>=0.25.0
+aiohttp>=3.8.6
+
+# Environment and Configuration
+python-dotenv>=1.0.0
+pydantic==1.10.12
+python-multipart==0.0.6
+
+# Logging and Monitoring
+loguru>=0.7.2
+
+# File Processing
+openpyxl>=3.1.2
+xlsxwriter>=3.1.9
+
+# Security and Validation
+cryptography>=41.0.0
+bcrypt>=4.0.1
+passlib>=1.7.4
+
+# Medical/Scientific Libraries
+spacy>=3.7.0
+
+# Agent framework
+agno
+
+# Additional useful packages
+plotly>=5.17.0
+matplotlib>=3.7.0
+seaborn>=0.12.0

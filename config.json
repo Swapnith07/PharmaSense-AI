@@ -1,0 +1,8 @@
+{
+    "qdrant_host": "localhost",
+    "qdrant_port": 6333,
+    "collection_name": "drug_embeddings_biobert",
+    "neo4j_uri": "bolt://localhost:7687",
+    "neo4j_user": "neo4j",
+    "neo4j_password": "your_password"
+}

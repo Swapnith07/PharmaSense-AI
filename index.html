@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pharmaceutical Safety Suite</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230a2540'/><text y='0.8em' x='18' font-size='70' font-family='Poppins' fill='%23ffd700'>💊</text></svg>"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", Arial, sans-serif;
+        background: linear-gradient(135deg, #e0f7fa 0%, #f8fafc 100%);
+        color: #0a2540;
+        margin: 0;
+        padding: 0;
+      }
+      .main-header {
+        text-align: center;
+        color: #0a2540;
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-size: 2.5em;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px #e0e7ef;
+      }
+      .tab-list {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 28px;
+        justify-content: center;
+      }
+      .tab {
+        height: 54px;
+        padding: 0 28px;
+        color: #0a2540;
+        font-weight: 600;
+        background: #fff;
+        border: none;
+        border-radius: 14px 14px 0 0;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 2px 8px #e0e7ef;
+        font-size: 1.1em;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      }
+      .tab.active {
+        background: linear-gradient(90deg, #0a2540 60%, #00bfae 100%);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 4px 16px #b2ebf2;
+      }
+      .tab-content {
+        display: none;
+        background: #fff;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 4px 24px #b2ebf2;
+        padding: 36px 32px 32px 32px;
+        margin: 0 auto 32px auto;
+        max-width: 1100px;
+        min-height: 400px;
+        animation: fadeIn 0.5s;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .columns {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 24px;
+      }
+      .col {
+        flex: 1;
+      }
+      @media (max-width: 900px) {
+        .columns {
+          flex-direction: column;
+          gap: 16px;
+        }
+        .tab-content {
+          padding: 18px 6px;
+        }
+      }
+      .feature-card,
+      .drug-card,
+      .interaction-detail,
+      .metric-container,
+      .success,
+      .warning,
+      .error,
+      .info {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px #e0e7ef;
+        padding: 20px;
+        margin-bottom: 18px;
+        transition: box-shadow 0.2s;
+      }
+      .feature-card:hover,
+      .drug-card:hover,
+      .interaction-detail:hover {
+        box-shadow: 0 6px 24px #b2ebf2;
+      }
+      .btn {
+        background: linear-gradient(90deg, #0a2540 60%, #00bfae 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 22px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 6px 0;
+        box-shadow: 0 2px 8px #e0e7ef;
+        transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      }
+      .btn:hover {
+        background: linear-gradient(90deg, #00bfae 0%, #0a2540 100%);
+        box-shadow: 0 4px 16px #b2ebf2;
+        transform: translateY(-2px) scale(1.03);
+      }
+      .input,
+      .textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1.5px solid #b2ebf2;
+        margin-bottom: 12px;
+        font-size: 1.1em;
+        background: #f8fafc;
+        color: #0a2540;
+        transition: border 0.2s;
+      }
+      .input:focus,
+      .textarea:focus {
+        border: 1.5px solid #00bfae;
+        outline: none;
+      }
+      .textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .success {
+        background: #e6fff7;
+        color: #00796b;
+        border-left: 5px solid #00bfae;
+      }
+      .warning {
+        background: #fffbe6;
+        color: #b26a00;
+        border-left: 5px solid #ffd700;
+      }
+      .error {
+        background: #ffe6e6;
+        color: #b00020;
+        border-left: 5px solid #ff5252;
+      }
+      .info {
+        background: #e6f7ff;
+        color: #0a2540;
+        border-left: 5px solid #00bfae;
+      }
+      .metric-container {
+        background: #f8fafc;
+        border: 1.5px solid #b2ebf2;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #e0e7ef;
+      }
+      .chat-container {
+        max-height: 400px;
+        overflow-y: auto;
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px #e0e7ef;
+      }
+      .chat-message {
+        margin-bottom: 16px;
+      }
+      .chat-message.user {
+        text-align: right;
+      }
+      .chat-message.assistant {
+        text-align: left;
+      }
+      .chat-message .bubble {
+        display: inline-block;
+        padding: 12px 20px;
+        border-radius: 18px;
+        max-width: 70%;
+        font-size: 1.1em;
+        box-shadow: 0 2px 8px #e0e7ef;
+      }
+      .chat-message.user .bubble {
+        background: linear-gradient(90deg, #0a2540 60%, #00bfae 100%);
+        color: #fff;
+        border-bottom-right-radius: 6px;
+      }
+      .chat-message.assistant .bubble {
+        background: #fff;
+        color: #0a2540;
+        border-bottom-left-radius: 6px;
+      }
+      .chat-intent-badge {
+        background: #ffd700;
+        padding: 8px 16px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 1em;
+        color: #0a2540;
+        font-weight: 700;
+        border: 1.5px solid #ffe066;
+        display: inline-block;
+      }
+      .expander {
+        margin-bottom: 14px;
+      }
+      .expander summary {
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .expander[open] {
+        background: #f1f5f9;
+        border-radius: 8px;
+        padding: 10px 16px;
+      }
+      .footer-text {
+        color: #0a2540;
+        font-size: 1em;
+        margin-top: 32px;
+        text-align: center;
+        background: linear-gradient(90deg, #0a2540 60%, #00bfae 100%);
+        padding: 24px 0 18px 0;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 -2px 12px #b2ebf2;
+      }
+      .footer-text strong {
+        color: #ffd700;
+      }
+      /* Custom scrollbars */
+      ::-webkit-scrollbar {
+        width: 10px;
+        background: #e0f7fa;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #b2ebf2;
+        border-radius: 8px;
+      }
+      ::selection {
+        background: #00bfae;
+        color: #fff;
+      }
+      /* Responsive tweaks */
+      @media (max-width: 600px) {
+        .main-header {
+          font-size: 1.5em;
+        }
+        .tab {
+          font-size: 1em;
+          padding: 0 10px;
+        }
+        .tab-content {
+          padding: 8px 2px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="main-header">💊 Pharmaceutical Safety Suite</h1>
+    <p
+      style="
+        text-align: center;
+        color: #4b5563;
+        margin-bottom: 30px;
+        font-size: 1.1em;
+      "
+    >
+      Comprehensive drug safety analysis, alternative suggestions, and
+      intelligent consultation
+    </p>
+    <div class="tab-list">
+      <button class="tab active" data-tab="interactions">
+        🔍 Drug Interactions
+      </button>
+      <button class="tab" data-tab="alternatives">💊 Drug Alternatives</button>
+      <button class="tab" data-tab="consultant">🤖 AI Consultant</button>
+      <button class="tab" data-tab="legal">⚖️ Legal Q&A</button>
+    </div>
+    <div class="tab-content active" id="tab-interactions">
+      <!-- Drug Interactions Tab -->
+      <h2>🔍 Drug Interaction Checker</h2>
+      <p style="color: #6b7280">
+        Check for potential interactions between multiple medications with
+        detailed analysis
+      </p>
+      <div class="columns">
+        <div class="col">
+          <h3>Enter Medications</h3>
+          <label
+            ><input type="radio" name="input-method" value="manual" checked />
+            Manual Entry</label
+          >
+          <label style="margin-left: 20px"
+            ><input type="radio" name="input-method" value="nl" /> Natural
+            Language</label
+          >
+          <div id="manual-entry">
+            <label for="num-drugs">Number of drugs to check:</label>
+            <input
+              type="number"
+              id="num-drugs"
+              class="input"
+              min="2"
+              max="10"
+              value="2"
+            />
+            <div id="drug-inputs"></div>
+            <button class="btn" id="check-interactions">
+              🔍 Check Interactions
+            </button>
+          </div>
+          <div id="nl-entry" style="display: none">
+            <textarea
+              id="nl-query"
+              class="textarea"
+              placeholder="e.g., 'Can I take Lepirudin with Apixaban?' or 'Is it safe to combine aspirin and warfarin?'"
+            ></textarea>
+            <button class="btn" id="analyze-nl">🔍 Analyze Query</button>
+          </div>
+        </div>
+        <div class="col">
+          <h3>Quick Examples</h3>
+          <button class="btn example-btn">Lepirudin + Apixaban</button>
+          <button class="btn example-btn">Aspirin + Warfarin</button>
+          <button class="btn example-btn">Metformin + Insulin</button>
+        </div>
+      </div>
+      <div id="interaction-results"></div>
+    </div>
+    <div class="tab-content" id="tab-alternatives">
+      <!-- Drug Alternatives Tab -->
+      <h2>💊 Drug Alternative Finder</h2>
+      <p style="color: #6b7280">
+        Find similar drugs and potential alternatives for your medication with
+        detailed explanations
+      </p>
+      <div class="columns">
+        <div class="col">
+          <h3>Find Alternatives</h3>
+          <input
+            type="text"
+            id="alt-drug-input"
+            class="input"
+            placeholder="e.g., Aspirin, Metformin, Lepirudin"
+          />
+          <button class="btn" id="find-alternatives">
+            🔍 Find Alternatives
+          </button>
+          <button class="btn" id="clear-alternatives">🗑️ Clear Results</button>
+        </div>
+        <div class="col">
+          <h3>Popular Searches</h3>
+          <button class="btn pop-btn">Aspirin</button>
+          <button class="btn pop-btn">1-Testosterone</button>
+          <button class="btn pop-btn">Folinic acid</button>
+          <button class="btn pop-btn">tetrahydrofolate</button>
+          <button class="btn pop-btn">Warfarin</button>
+        </div>
+      </div>
+      <div id="alternatives-results"></div>
+    </div>
+    <div class="tab-content" id="tab-consultant">
+      <!-- AI Consultant Tab -->
+      <h2>🤖 AI Pharmaceutical Consultant</h2>
+      <p style="color: #6b7280">
+        Chat with our AI assistant for personalized medication guidance
+      </p>
+      <div class="columns">
+        <div class="col" style="flex: 2">
+          <div class="chat-container" id="chat-container"></div>
+          <input
+            type="text"
+            id="chat-input"
+            class="input"
+            placeholder="Ask about medications, interactions, alternatives, or general health questions..."
+          />
+          <button class="btn" id="send-chat">Send</button>
+        </div>
+        <div class="col" style="flex: 1">
+          <h3>💡 Quick Actions</h3>
+          <details class="expander">
+            <summary>🔍 Quick Interaction Check</summary>
+            <input
+              type="text"
+              id="quick-drug1"
+              class="input"
+              placeholder="Drug 1"
+            />
+            <input
+              type="text"
+              id="quick-drug2"
+              class="input"
+              placeholder="Drug 2"
+            />
+            <button class="btn" id="quick-check">Check</button>
+          </details>
+          <details class="expander">
+            <summary>💊 Quick Alternative Search</summary>
+            <input
+              type="text"
+              id="quick-alt"
+              class="input"
+              placeholder="Drug name"
+            />
+            <button class="btn" id="quick-alt-btn">Find Alternatives</button>
+          </details>
+          <h4>📝 Example Queries</h4>
+          <button class="btn example-chat">
+            Alternatives for Folinic Acid?
+          </button>
+          <button class="btn example-chat">Side effects of Aspirin</button>
+          <button class="btn example-chat">
+            What happens if i take lepuridin with aspirin?
+          </button>
+          <button class="btn example-chat">Blood thinner safety tips</button>
+          <button class="btn" id="clear-chat">🗑️ Clear Chat</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-legal">
+      <!-- Legal Q&A Tab -->
+      <h2>⚖️ Legal/Regulatory Chatbot</h2>
+      <p style="color: #6b7280">
+        Ask questions about the Drugs and Cosmetics Act, 1940. The chatbot will
+        answer using only the official legal text.
+      </p>
+      <div class="columns">
+        <div class="col" style="flex: 2">
+          <div class="chat-container" id="legal-chat-container"></div>
+          <input
+            type="text"
+            id="legal-chat-input"
+            class="input"
+            placeholder="Ask about the Drugs and Cosmetics Act, 1940..."
+          />
+          <button class="btn" id="send-legal-chat">Send</button>
+        </div>
+        <div class="col" style="flex: 1">
+          <!-- Add legal quick search questions -->
+          <button class="btn legal-example">
+            Is a license required to sell drugs or cosmetics?
+          </button>
+          <button class="btn legal-example">
+            What rules must I follow to sell and stock drugs?
+          </button>
+          <button class="btn legal-example">
+            What is the penalty for selling without a license?
+          </button>
+          <button class="btn legal-example">
+            Can I sell drugs claiming to cure diseases like cancer or diabetes?
+          </button>
+          <button class="btn" id="clear-legal-chat">🗑️ Clear Chat</button>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="footer-text">
+      <strong style="color: #374151">⚕️ Medical Disclaimer:</strong>
+      <span style="color: #6b7280"
+        >This tool provides educational information only. Always consult with
+        healthcare professionals before making medication decisions.</span
+      >
+      <br /><br />
+      <strong style="color: #fff">🏥 Pharmaceutical Safety Suite</strong>
+      <span style="color: #6b7280"
+        >| Drug Interactions • Alternative Suggestions • AI Consultation</span
+      >
+    </div>
+    <script>
+      // --- Tab switching logic ---
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", function () {
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((tc) => tc.classList.remove("active"));
+          this.classList.add("active");
+          document
+            .getElementById("tab-" + this.dataset.tab)
+            .classList.add("active");
+        });
+      });
+
+      // --- Drug Interactions Tab Logic ---
+      const numDrugsInput = document.getElementById("num-drugs");
+      const drugInputsDiv = document.getElementById("drug-inputs");
+      function renderDrugInputs() {
+        const n = parseInt(numDrugsInput.value);
+        drugInputsDiv.innerHTML = "";
+        for (let i = 0; i < n; i++) {
+          const inp = document.createElement("input");
+          inp.type = "text";
+          inp.className = "input";
+          inp.placeholder = `Drug ${i + 1}`;
+          inp.id = `drug_${i}`;
+          drugInputsDiv.appendChild(inp);
+        }
+      }
+      numDrugsInput.addEventListener("input", renderDrugInputs);
+      renderDrugInputs();
+
+      // Input method switching
+      document
+        .querySelectorAll('input[name="input-method"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", function () {
+            if (this.value === "manual") {
+              document.getElementById("manual-entry").style.display = "";
+              document.getElementById("nl-entry").style.display = "none";
+            } else {
+              document.getElementById("manual-entry").style.display = "none";
+              document.getElementById("nl-entry").style.display = "";
+            }
+          });
+        });
+
+      // Example buttons for interactions
+      document.querySelectorAll(".example-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const drugs = this.textContent.split(" + ");
+          fetchInteractions(drugs);
+        });
+      });
+
+      // Check Interactions button
+      document
+        .getElementById("check-interactions")
+        .addEventListener("click", function () {
+          const n = parseInt(numDrugsInput.value);
+          const drugs = [];
+          for (let i = 0; i < n; i++) {
+            const val = document.getElementById(`drug_${i}`).value.trim();
+            if (val) drugs.push(val);
+          }
+          if (drugs.length < 2) {
+            showMessage(
+              "interaction-results",
+              "warning",
+              "Please enter at least 2 drugs to check interactions."
+            );
+            return;
+          }
+          fetchInteractions(drugs);
+        });
+      // Analyze NL Query
+      document
+        .getElementById("analyze-nl")
+        .addEventListener("click", function () {
+          const query = document.getElementById("nl-query").value.trim();
+          if (!query) {
+            showMessage(
+              "interaction-results",
+              "warning",
+              "Please enter a query to analyze."
+            );
+            return;
+          }
+          // For demo, extract drugs from query (very basic)
+          fetch("http://localhost:8000/api/ai_consultant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: query }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              if (
+                result.intent === "check_interaction" &&
+                result.raw_drugs &&
+                result.raw_drugs.length >= 2
+              ) {
+                fetchInteractions(result.raw_drugs);
+              } else {
+                // fallback: just show a warning
+                showMessage(
+                  "interaction-results",
+                  "error",
+                  "Could not identify drug interaction query. Please try manual entry or rephrase your question."
+                );
+              }
+            })
+            .catch(() =>
+              showMessage("interaction-results", "error", "Server error.")
+            );
+        });
+      function showMessage(targetId, type, msg) {
+        document.getElementById(
+          targetId
+        ).innerHTML = `<div class="${type}">${msg}</div>`;
+      }
+      function showInteractionResults(
+        inputDrugs,
+        correctedDrugs,
+        interactions,
+        databaseAvailable = true
+      ) {
+        let html = "";
+
+        // Check if database is available
+        if (!databaseAvailable) {
+          html += `<div class="warning">⚠️ <b>Database temporarily unavailable</b></div>`;
+          html += `<div class="info">Our drug interaction database is currently offline. Please check with your healthcare provider for accurate drug interaction information.</div>`;
+          html += `<div class="error">⚕️ <b>Important:</b> Never rely solely on online tools for medication decisions. Always consult your healthcare provider.</div>`;
+          document.getElementById("interaction-results").innerHTML = html;
+          return;
+        }
+
+        if (inputDrugs.join(",") !== correctedDrugs.join(",")) {
+          html += `<div class="info">🔧 <b>Drug names were corrected:</b><br>`;
+          for (let i = 0; i < inputDrugs.length; i++) {
+            if (inputDrugs[i] !== correctedDrugs[i]) {
+              html += `&bull; '${inputDrugs[i]}' → '${correctedDrugs[i]}'<br>`;
+            }
+          }
+          html += "</div>";
+        }
+        if (!interactions || interactions.length === 0) {
+          html += `<div class="success">✅ <b>No interactions found</b> between ${correctedDrugs.join(
+            ", "
+          )}</div>`;
+          html += `<div class="info">This suggests these medications may be safe to take together, but always consult your healthcare provider.</div>`;
+        } else {
+          let major = 0,
+            moderate = 0,
+            minor = 0;
+          interactions.forEach((inter) => {
+            const desc = inter.interaction_description.toLowerCase();
+            if (
+              desc.includes("severe") ||
+              desc.includes("dangerous") ||
+              desc.includes("fatal")
+            )
+              major++;
+            else if (desc.includes("caution") || desc.includes("monitor"))
+              moderate++;
+            else minor++;
+          });
+          html += `<div class="columns">
+                    <div class="col metric-container"><h3>${interactions.length}</h3><p>Total Interactions</p></div>
+                    <div class="col metric-container"><h3>${major}</h3><p>Major</p></div>
+                    <div class="col metric-container"><h3>${moderate}</h3><p>Moderate</p></div>
+                    <div class="col metric-container"><h3>${minor}</h3><p>Minor</p></div>
+                </div>`;
+          if (major > 0)
+            html += `<div class="error">🚨 <b>${major} potentially serious interaction(s) detected!</b> Immediate medical consultation recommended.</div>`;
+          else if (moderate > 0)
+            html += `<div class="warning">⚠️ <b>${moderate} moderate interaction(s) found.</b> Monitor for effects and consult healthcare provider.</div>`;
+          interactions.forEach((inter, i) => {
+            html += `<div class="interaction-detail">
+                        <b>${i + 1}. ${inter.entity1.name} ↔ ${
+              inter.entity2.name
+            }</b><br>
+                        <span>${inter.interaction_description}</span>
+                    </div>`;
+          });
+          if (major > 0)
+            html += `<div class="error">🏥 <b>Clinical Recommendations for Major Interactions:</b><ul><li>Immediate consultation with healthcare provider required</li><li>Consider alternative medications if available</li><li>If co-administration necessary, intensive monitoring required</li><li>Dose adjustments may be needed</li></ul></div>`;
+          else if (moderate > 0)
+            html += `<div class="warning">👨‍⚕️ <b>Clinical Recommendations for Moderate Interactions:</b><ul><li>Consult healthcare provider before continuing combination</li><li>Regular monitoring for interaction effects</li><li>Be aware of signs and symptoms to watch for</li><li>Dose timing adjustments may help reduce interaction risk</li></ul></div>`;
+          html += `<div class="info">⚕️ <b>Important:</b> This analysis is for educational purposes. Always consult your healthcare provider before making any medication changes.</div>`;
+        }
+        document.getElementById("interaction-results").innerHTML = html;
+      }
+      function fetchInteractions(drugs) {
+        showMessage("interaction-results", "info", "Loading...");
+        fetch("http://localhost:8000/api/check_interactions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ drugs }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            showInteractionResults(
+              data.input_drugs,
+              data.corrected_drugs,
+              data.interactions,
+              data.database_available
+            );
+          })
+          .catch(() =>
+            showMessage("interaction-results", "error", "Server error.")
+          );
+      }
+
+      // --- Drug Alternatives Tab Logic ---
+      function showAlternativesResults(
+        inputDrug,
+        correctedDrug,
+        alternatives,
+        databaseAvailable = true
+      ) {
+        let html = "";
+
+        // Check if database is available
+        if (!databaseAvailable) {
+          html += `<div class="warning">⚠️ <b>Database temporarily unavailable</b></div>`;
+          html += `<div class="info">Our drug alternatives database is currently offline. Please check with your healthcare provider for alternative medication options.</div>`;
+          html += `<div class="error">⚕️ <b>Important:</b> Never switch medications without medical supervision. Always consult your healthcare provider.</div>`;
+          document.getElementById("alternatives-results").innerHTML = html;
+          return;
+        }
+
+        if (inputDrug !== correctedDrug) {
+          html += `<div class="info">🔧 Drug name corrected: '${inputDrug}' → '${correctedDrug}'</div>`;
+        }
+        if (!alternatives || alternatives.length === 0) {
+          html += `<div class="warning">❌ No alternatives found for '${correctedDrug}'</div>`;
+          html += `<div class="info">This could mean:<ul><li>The drug has a unique mechanism</li><li>Limited alternatives in our database</li><li>Try checking the spelling</li></ul></div>`;
+        } else {
+          // Filter out the searched drug itself from alternatives
+          const filteredAlternatives = alternatives.filter(
+            (d) =>
+              d.entity_name &&
+              d.entity_name.toLowerCase() !== correctedDrug.toLowerCase()
+          );
+          const high = filteredAlternatives.filter(
+            (d) => d.similarity_score > 0.8
+          );
+          const med = filteredAlternatives.filter(
+            (d) => d.similarity_score <= 0.8 && d.similarity_score >= 0.6
+          );
+          const low = filteredAlternatives.filter(
+            (d) => d.similarity_score < 0.6
+          );
+          html += `<div class="columns">
+                    <div class="col metric-container"><h3 style="color:#16a34a;">🎯 ${Math.min(
+                      high.length,
+                      5
+                    )}</h3><p>High Similarity</p><small>Score > 80%</small></div>
+                    <div class="col metric-container"><h3 style="color:#eab308;">📊 ${
+                      med.length
+                    }</h3><p>Medium Similarity</p><small>Score 60-80%</small></div>
+                    <div class="col metric-container"><h3 style="color:#dc2626;">📉 ${
+                      low.length
+                    }</h3><p>Low Similarity</p><small>Score < 60%</small></div>
+                </div>`;
+          if (high.length) {
+            html += `<h4>🎯 High Similarity (>80%)</h4>`;
+            high.slice(0, 5).forEach((d, i) => {
+              html += `<div class="success"><b>${i + 1}. ${
+                d.entity_name
+              }</b> - Similarity: ${(d.similarity_score * 100).toFixed(
+                1
+              )}%</div>`;
+            });
+          }
+          if (med.length && high.length < 5) {
+            html += `<h4>📊 Medium Similarity (60-80%)</h4>`;
+            med.slice(0, 5 - high.length).forEach((d, i) => {
+              html += `<div class="warning"><b>${high.length + i + 1}. ${
+                d.entity_name
+              }</b> - Similarity: ${(d.similarity_score * 100).toFixed(
+                1
+              )}%</div>`;
+            });
+          }
+          if (low.length && high.length + med.length < 5) {
+            html += `<h4>📉 Lower Similarity (<60%)</h4>`;
+            low.slice(0, 5 - high.length - med.length).forEach((d, i) => {
+              html += `<div class="info"><b>${
+                high.length + med.length + i + 1
+              }. ${d.entity_name}</b> - Similarity: ${(
+                d.similarity_score * 100
+              ).toFixed(1)}%</div>`;
+            });
+          }
+          html += `<h4>📋 Important Considerations</h4><div class="columns"><div class="col info"><b>✅ Before Switching:</b><ul><li>Consult your healthcare provider</li><li>Check for allergies to new medication</li><li>Verify dosing equivalence</li><li>Consider timing of switch</li></ul></div><div class="col warning"><b>⚠️ Monitor for:</b><ul><li>Different side effect profiles</li><li>Drug interaction changes</li><li>Effectiveness differences</li><li>Adjustment period symptoms</li></ul></div></div><div class="error">⚕️ <b>Critical:</b> Never switch medications without medical supervision. Alternatives may have different dosing, contraindications, or side effects.</div>`;
+        }
+        document.getElementById("alternatives-results").innerHTML = html;
+      }
+      document
+        .getElementById("find-alternatives")
+        .addEventListener("click", function () {
+          const drug = document.getElementById("alt-drug-input").value.trim();
+          if (!drug) {
+            showMessage(
+              "alternatives-results",
+              "warning",
+              "Please enter a drug name."
+            );
+            return;
+          }
+          showMessage("alternatives-results", "info", "Loading...");
+          fetch("http://localhost:8000/api/find_alternatives", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ drug }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showAlternativesResults(
+                data.input_drug,
+                data.corrected_drug,
+                data.alternatives,
+                data.database_available
+              );
+            })
+            .catch(() =>
+              showMessage("alternatives-results", "error", "Server error.")
+            );
+        });
+      document
+        .getElementById("clear-alternatives")
+        .addEventListener("click", function () {
+          document.getElementById("alternatives-results").innerHTML = "";
+        });
+      document.querySelectorAll(".pop-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const drug = this.textContent;
+          showMessage("alternatives-results", "info", "Loading...");
+          fetch("http://localhost:8000/api/find_alternatives", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ drug }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showAlternativesResults(
+                data.input_drug,
+                data.corrected_drug,
+                data.alternatives,
+                data.database_available
+              );
+            })
+            .catch(() =>
+              showMessage("alternatives-results", "error", "Server error.")
+            );
+        });
+      });
+
+      // --- AI Consultant Chatbot Logic ---
+      const chatContainer = document.getElementById("chat-container");
+      let chatMessages = [
+        {
+          role: "assistant",
+          content:
+            "Hello! I'm your pharmaceutical assistant. I can help with drug interactions, alternatives, and general medication questions. What would you like to know?",
+        },
+      ];
+      function renderChat() {
+        chatContainer.innerHTML = "";
+        chatMessages.forEach((msg) => {
+          const div = document.createElement("div");
+          div.className = "chat-message " + msg.role;
+          if (msg.role === "assistant") {
+            // Try to extract intent badge and response
+            const match = msg.content.match(
+              /<div class="chat-intent-badge">([\s\S]*?)<\/div>\s*<div[^>]*>([\s\S]*)<\/div>/
+            );
+            if (match) {
+              div.innerHTML = `<div class="chat-intent-badge">${
+                match[1]
+              }</div><div style="color: #374151; line-height: 1.6;">${formatChatResponse(
+                match[2]
+              )}</div>`;
+            } else {
+              div.innerHTML = `<div class="bubble">${formatChatResponse(
+                msg.content
+              )}</div>`;
+            }
+          } else {
+            div.innerHTML = `<div class="bubble">${msg.content}</div>`;
+          }
+          chatContainer.appendChild(div);
+        });
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+      renderChat();
+      document.getElementById("send-chat").addEventListener("click", sendChat);
+      document
+        .getElementById("chat-input")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            sendChat();
+          }
+        });
+      function sendChat() {
+        const input = document.getElementById("chat-input");
+        const text = input.value.trim();
+        if (!text) return;
+        chatMessages.push({ role: "user", content: text });
+        renderChat();
+        input.value = "";
+        // Show loading message
+        chatMessages.push({ role: "assistant", content: "<i>Thinking...</i>" });
+        renderChat();
+        fetch("http://localhost:8000/api/ai_consultant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            chatMessages.pop(); // Remove loading
+            if (result.success) {
+              let intent_display = "";
+              if (result.intent === "check_interaction")
+                intent_display = "⚠️ Drug Interaction Query";
+              else if (result.intent === "find_similar")
+                intent_display = "🔍 Alternative Search";
+              else intent_display = "💡 General Information";
+              const response = `<div class="chat-intent-badge">${intent_display}</div>\n\n<div style="color: #374151; line-height: 1.6;">${result.ai_response}</div>`;
+              chatMessages.push({ role: "assistant", content: response });
+            } else {
+              chatMessages.push({
+                role: "assistant",
+                content:
+                  "❌ I encountered an error: " +
+                  (result.error || "Unknown error"),
+              });
+            }
+            renderChat();
+          })
+          .catch(() => {
+            chatMessages.pop();
+            chatMessages.push({
+              role: "assistant",
+              content: "❌ Server error.",
+            });
+            renderChat();
+          });
+      }
+      document
+        .getElementById("clear-chat")
+        .addEventListener("click", function () {
+          chatMessages = [
+            {
+              role: "assistant",
+              content:
+                "Hello! I'm your pharmaceutical assistant. I can help with drug interactions, alternatives, and general medication questions. What would you like to know?",
+            },
+          ];
+          renderChat();
+        });
+      // Quick Actions
+      document
+        .getElementById("quick-check")
+        .addEventListener("click", function () {
+          const d1 = document.getElementById("quick-drug1").value.trim();
+          const d2 = document.getElementById("quick-drug2").value.trim();
+          if (!d1 || !d2) return;
+          const query = `Can I take ${d1} with ${d2}?`;
+          chatMessages.push({ role: "user", content: query });
+          renderChat();
+          chatMessages.push({
+            role: "assistant",
+            content: "<i>Thinking...</i>",
+          });
+          renderChat();
+          fetch("http://localhost:8000/api/ai_consultant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: query }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              chatMessages.pop();
+              if (result.success) {
+                let intent_display = "";
+                if (result.intent === "check_interaction")
+                  intent_display = "⚠️ Drug Interaction Query";
+                else if (result.intent === "find_similar")
+                  intent_display = "🔍 Alternative Search";
+                else intent_display = "💡 General Information";
+                const response = `<div class="chat-intent-badge">${intent_display}</div>\n\n<div style="color: #374151; line-height: 1.6;">${result.ai_response}</div>`;
+                chatMessages.push({ role: "assistant", content: response });
+              } else {
+                chatMessages.push({
+                  role: "assistant",
+                  content:
+                    "❌ I encountered an error: " +
+                    (result.error || "Unknown error"),
+                });
+              }
+              renderChat();
+            })
+            .catch(() => {
+              chatMessages.pop();
+              chatMessages.push({
+                role: "assistant",
+                content: "❌ Server error.",
+              });
+              renderChat();
+            });
+        });
+      document
+        .getElementById("quick-alt-btn")
+        .addEventListener("click", function () {
+          const d = document.getElementById("quick-alt").value.trim();
+          if (!d) return;
+          const query = `What drugs are similar to ${d}?`;
+          chatMessages.push({ role: "user", content: query });
+          renderChat();
+          chatMessages.push({
+            role: "assistant",
+            content: "<i>Thinking...</i>",
+          });
+          renderChat();
+          fetch("http://localhost:8000/api/ai_consultant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: query }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              chatMessages.pop();
+              if (result.success) {
+                let intent_display = "";
+                if (result.intent === "check_interaction")
+                  intent_display = "⚠️ Drug Interaction Query";
+                else if (result.intent === "find_similar")
+                  intent_display = "🔍 Alternative Search";
+                else intent_display = "💡 General Information";
+                const response = `<div class="chat-intent-badge">${intent_display}</div>\n\n<div style="color: #374151; line-height: 1.6;">${result.ai_response}</div>`;
+                chatMessages.push({ role: "assistant", content: response });
+              } else {
+                chatMessages.push({
+                  role: "assistant",
+                  content:
+                    "❌ I encountered an error: " +
+                    (result.error || "Unknown error"),
+                });
+              }
+              renderChat();
+            })
+            .catch(() => {
+              chatMessages.pop();
+              chatMessages.push({
+                role: "assistant",
+                content: "❌ Server error.",
+              });
+              renderChat();
+            });
+        });
+      document.querySelectorAll(".example-chat").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const query = this.textContent;
+          chatMessages.push({ role: "user", content: query });
+          renderChat();
+          chatMessages.push({
+            role: "assistant",
+            content: "<i>Thinking...</i>",
+          });
+          renderChat();
+          fetch("http://localhost:8000/api/ai_consultant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: query }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              chatMessages.pop();
+              if (result.success) {
+                let intent_display = "";
+                if (result.intent === "check_interaction")
+                  intent_display = "⚠️ Drug Interaction Query";
+                else if (result.intent === "find_similar")
+                  intent_display = "🔍 Alternative Search";
+                else intent_display = "💡 General Information";
+                const response = `<div class="chat-intent-badge">${intent_display}</div>\n\n<div style="color: #374151; line-height: 1.6;">${result.ai_response}</div>`;
+                chatMessages.push({ role: "assistant", content: response });
+              } else {
+                chatMessages.push({
+                  role: "assistant",
+                  content:
+                    "❌ I encountered an error: " +
+                    (result.error || "Unknown error"),
+                });
+              }
+              renderChat();
+            })
+            .catch(() => {
+              chatMessages.pop();
+              chatMessages.push({
+                role: "assistant",
+                content: "❌ Server error.",
+              });
+              renderChat();
+            });
+        });
+      });
+
+      // --- Legal Q&A Chatbot Logic ---
+      const legalChatContainer = document.getElementById(
+        "legal-chat-container"
+      );
+      let legalChatMessages = [
+        {
+          role: "assistant",
+          content:
+            "Hello! I'm your legal assistant. Ask me anything about the Drugs and Cosmetics Act, 1940.",
+        },
+      ];
+      function renderLegalChat() {
+        legalChatContainer.innerHTML = "";
+        legalChatMessages.forEach((msg) => {
+          const div = document.createElement("div");
+          div.className = "chat-message " + msg.role;
+          if (msg.role === "assistant") {
+            div.innerHTML = `<div class="bubble">${formatChatResponse(
+              msg.content
+            )}</div>`;
+          } else {
+            div.innerHTML = `<div class="bubble">${msg.content}</div>`;
+          }
+          legalChatContainer.appendChild(div);
+        });
+        legalChatContainer.scrollTop = legalChatContainer.scrollHeight;
+      }
+      renderLegalChat();
+      document
+        .getElementById("send-legal-chat")
+        .addEventListener("click", sendLegalChat);
+      document
+        .getElementById("legal-chat-input")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            sendLegalChat();
+          }
+        });
+      function sendLegalChat() {
+        const input = document.getElementById("legal-chat-input");
+        const text = input.value.trim();
+        if (!text) return;
+        legalChatMessages.push({ role: "user", content: text });
+        renderLegalChat();
+        input.value = "";
+        // Show loading message
+        legalChatMessages.push({
+          role: "assistant",
+          content: "<i>Thinking...</i>",
+        });
+        renderLegalChat();
+        fetch("http://localhost:8000/api/legal_chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            legalChatMessages.pop(); // Remove loading
+            if (result.success) {
+              legalChatMessages.push({
+                role: "assistant",
+                content: result.ai_response,
+              });
+            } else {
+              legalChatMessages.push({
+                role: "assistant",
+                content:
+                  "❌ I encountered an error: " +
+                  (result.error || "Unknown error"),
+              });
+            }
+            renderLegalChat();
+          })
+          .catch(() => {
+            legalChatMessages.pop();
+            legalChatMessages.push({
+              role: "assistant",
+              content: "❌ Server error.",
+            });
+            renderLegalChat();
+          });
+      }
+      document
+        .getElementById("clear-legal-chat")
+        .addEventListener("click", function () {
+          legalChatMessages = [
+            {
+              role: "assistant",
+              content:
+                "Hello! I'm your legal assistant. Ask me anything about the Drugs and Cosmetics Act, 1940.",
+            },
+          ];
+          renderLegalChat();
+        });
+
+      // Add a function to format chat responses as human-readable HTML
+      function formatChatResponse(text) {
+        if (!text) return "";
+        // Split into lines and trim
+        const lines = text
+          .split(/\r?\n/)
+          .map((l) => l.trim())
+          .filter((l) => l.length > 0);
+        // Detect if it's a numbered or bulleted list
+        const isNumbered =
+          lines.length > 1 && lines.every((l) => /^\d+\./.test(l));
+        const isBulleted =
+          lines.length > 1 && lines.every((l) => /^[-*•]/.test(l));
+        if (isNumbered) {
+          return (
+            "<ol>" +
+            lines
+              .map((l) => `<li>${l.replace(/^\d+\.\s*/, "")}</li>`)
+              .join("") +
+            "</ol>"
+          );
+        } else if (isBulleted) {
+          return (
+            "<ul>" +
+            lines
+              .map((l) => `<li>${l.replace(/^[-*•]\s*/, "")}</li>`)
+              .join("") +
+            "</ul>"
+          );
+        } else if (lines.length > 1) {
+          // If multiple lines, show as paragraphs
+          return lines.map((l) => `<p>${l}</p>`).join("");
+        } else {
+          return `<p>${text}</p>`;
+        }
+      }
+
+      // Add event listener for legal-example buttons to send their text to the legal Q&A chatbot
+      // Also switch to the Legal Q&A tab if not already active
+
+      document.querySelectorAll(".legal-example").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          // Switch to Legal Q&A tab if not already active
+          document.querySelectorAll(".tab").forEach((tab) => {
+            if (tab.dataset.tab === "legal") tab.classList.add("active");
+            else tab.classList.remove("active");
+          });
+          document.querySelectorAll(".tab-content").forEach((tc) => {
+            if (tc.id === "tab-legal") tc.classList.add("active");
+            else tc.classList.remove("active");
+          });
+          // Send the question to the legal chatbot
+          const text = this.textContent;
+          legalChatMessages.push({ role: "user", content: text });
+          renderLegalChat();
+          // Show loading message
+          legalChatMessages.push({
+            role: "assistant",
+            content: "<i>Thinking...</i>",
+          });
+          renderLegalChat();
+          fetch("http://localhost:8000/api/legal_chatbot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              legalChatMessages.pop(); // Remove loading
+              if (result.success) {
+                legalChatMessages.push({
+                  role: "assistant",
+                  content: result.ai_response,
+                });
+              } else {
+                legalChatMessages.push({
+                  role: "assistant",
+                  content:
+                    "❌ I encountered an error: " +
+                    (result.error || "Unknown error"),
+                });
+              }
+              renderLegalChat();
+            })
+            .catch(() => {
+              legalChatMessages.pop();
+              legalChatMessages.push({
+                role: "assistant",
+                content: "❌ Server error.",
+              });
+              renderLegalChat();
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

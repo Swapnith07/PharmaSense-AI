@@ -1,0 +1,8 @@
+docker run --restart always -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/StrongPass123 -v "C:\Users\swapn\neo4j\data:/data" neo4j:latest
+
+
+
+docker run -p 6333:6333 -p 6334:6334 -v "${PWD}\qdrant_storage:/qdrant/storage" qdrant/qdrant
+
+
+uvicorn server:app --reload
