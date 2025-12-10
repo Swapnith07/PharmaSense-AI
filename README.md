@@ -422,6 +422,5 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 **Made with ❤️ for pharmaceutical safety**
 
-⭐ If this project helps you, please consider giving it a star!
 
 </div>
