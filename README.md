@@ -441,7 +441,7 @@ This project was developed collaboratively by:
 
 | Author | GitHub |
 |--------|--------|
-| **Swapnith Reddy** | [@Swapnith07](https://github.com/Swapnith07) | - |
+| **DVSS Swapnith** | [@Swapnith07](https://github.com/Swapnith07) | - |
 | **Bhavika Gondi** | [@bhavika-reddy](https://github.com/bhavika-reddy) | 
 
 
